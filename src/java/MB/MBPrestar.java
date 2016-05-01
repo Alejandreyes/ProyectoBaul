@@ -5,6 +5,7 @@
  */
 package MB;
 
+import Controlador.dao.DataAccessLayerException;
 import Controlador.dao.ObjetoDao;
 import Controlador.dao.PrestarDao;
 import Modelo.Objeto;
@@ -24,7 +25,7 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class MBPrestar {
 
-    @ManagedProperty(value="#{mBUsuario}")
+    @ManagedProperty(value = "#{mBUsuario}")
     MBUsuario mBUsuario;
     private PrestarId id;
     private Objeto objeto;
@@ -35,10 +36,10 @@ public class MBPrestar {
     private Integer calificacionprestador;
     private Integer calificaconsumidor;
     private Usuario us;
-    
+
     public MBPrestar() {
     }
-    
+
     public MBUsuario getmBUsuario() {
         return mBUsuario;
     }
@@ -119,25 +120,31 @@ public class MBPrestar {
         this.us = us;
     }
 
-    public void solicitarPrestamo(){
+    public void solicitarPrestamo() {
         ObjetoDao objd = new ObjetoDao();
-        Objeto obj = objd.Buscar(nombreObjeto);
-        objeto = obj;
-        Date date = new Date();
-        Prestar prst = new Prestar();
-        PrestarDao prstd = new PrestarDao();
-        PrestarId psid = new PrestarId();
-        
-        psid.setNombreconsumidor(us.getNombreusuario());
-        psid.setNombreprestador(objeto.getUsuario().getNombreusuario());
-        psid.setNombrelibro(objeto.getNombrelibro());
-        prst.setId(psid);
-        
-        prst.setUsuarioByNombreconsumidor(us);
-        prst.setUsuarioByNombreprestador(obj.getUsuario());
-        prst.setFechaprestamo(date);
-        
-        prstd.Guardar(prst);
+        try {
+            Objeto obj = objd.Buscar(nombreObjeto);
+            us= new Usuario(mBUsuario.getNombreusuario(), mBUsuario.getContrasenia(),mBUsuario.getNombre(),mBUsuario.getApellidos(), mBUsuario.getCorreo());
+            objeto = obj;
+            Date date = new Date();
+            Prestar prst = new Prestar();
+            PrestarDao prstd = new PrestarDao();
+            PrestarId psid = new PrestarId();
+
+            psid.setNombreconsumidor(us.getNombreusuario());
+            psid.setNombreprestador(objeto.getUsuario().getNombreusuario());
+            psid.setNombrelibro(objeto.getNombrelibro());
+            prst.setId(psid);
+
+            prst.setUsuarioByNombreconsumidor(us);
+            prst.setUsuarioByNombreprestador(obj.getUsuario());
+            prst.setFechaprestamo(date);
+
+            prstd.Guardar(prst);
+        } catch (DataAccessLayerException e) {
+
+        }
+
     }
-    
+
 }

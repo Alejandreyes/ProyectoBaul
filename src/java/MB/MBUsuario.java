@@ -96,14 +96,7 @@ public class MBUsuario {
         return "SignInIH";
     }
 
-    public String salir() {
-        nombreusuario = null;
-        contrasenia = null;
-        nombre = null;
-        apellidos = null;
-        correo = null;
-        return "index?faces-redirect=true";
-    }
+    
     public String signUp(){
         try{
             Usuario temp = new Usuario(nombreusuario, contrasenia, nombre, apellidos, correo);

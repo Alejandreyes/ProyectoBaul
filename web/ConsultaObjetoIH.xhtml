@@ -12,10 +12,10 @@
             <ui:define name="content">
             <p:growl id="mensajes" showDetail="true" life="10000" />
                 
-                <h:form>
+                <h:form >
             
             <p:growl id="mensajes" showDetail="true" life="10000" />
-            <table id="consultarObjtbl">                
+            <table  id="consultarObjtbl">                
                 <tr>
                   <td><h:outputText  value="Autor: " /></td>
                   <td><h:outputText id="autor" value="#{mBObjeto.autor}" /></td>                   
@@ -55,17 +55,11 @@
         </h:form>
         <br/>
         <h:form rendered="#{aBCCPerfil.verificarSesion()}">            
-            <h:inputHidden id="nombreLibro" value="#{mBPrestar.nombreObjeto}" />
+            <h:inputText id="nombreLibro" value="#{mBPrestar.nombreObjeto}" />
             <p:commandButton id="solicitarPrestamo" value="Solicitar Prestamo"  action="#{mBPrestar.solicitarPrestamo()}" update=":mensajes" />                                      
         </h:form>
         <br/>
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-            Cambiar Objeto
-        </button>
         
-                
-                
-                
                 
             </ui:define>
 

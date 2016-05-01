@@ -9,7 +9,6 @@ import Modelo.Usuario;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Transaction;
 
 /**
  *

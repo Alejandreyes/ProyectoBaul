@@ -171,7 +171,7 @@ public class MBObjeto {
         nombreUsuario = obj.getUsuario().getNombreusuario();
         //nombreLibro = obj.getNombrelibro();
         System.out.println(obj);
-        return "ConsultaObjetoIH.xhtml";
+        return "ConsultaObjetoIH";
     }
     public String bajaObjeto(){
         System.out.println("-------------->"+nombreLibro);
@@ -179,7 +179,7 @@ public class MBObjeto {
         ObjetoDao objd = new ObjetoDao();
         obj = objd.Buscar(nombreLibro);
         objd.Eliminar(obj);
-        return "index.xhtml";
+        return "index.xhtml?faces-redirect=true";
     }
     public void cambiarObjeto(){
         System.out.println("-.-.-.-243-4-->"+nombreLibro);
@@ -199,5 +199,6 @@ public class MBObjeto {
         ObjetoDao dao=new ObjetoDao();
         return dao.obtenerTodos();
     }
+    
     
 }

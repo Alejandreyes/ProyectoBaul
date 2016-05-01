@@ -11,6 +11,9 @@ import Modelo.Usuario;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -20,13 +23,13 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class ABCCPerfil {
 
-    @ManagedProperty(value="#{mBUsuario}")
+    @ManagedProperty(value = "#{mBUsuario}")
     private MBUsuario mBUsuario;
     private String nombreusuario;
-     private String contrasenia;
-     private String nombre;
-     private String apellidos;
-     private String correo;
+    private String contrasenia;
+    private String nombre;
+    private String apellidos;
+    private String correo;
     public ABCCPerfil() {
     }
 
@@ -77,34 +80,55 @@ public class ABCCPerfil {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
     
-    public String Consulta(){    
-        nombre= mBUsuario.getNombre();
-        apellidos=mBUsuario.getApellidos();
-        correo=mBUsuario.getCorreo();
-        
+    
+
+    public String Consulta() {
+        nombre = mBUsuario.getNombre();
+        apellidos = mBUsuario.getApellidos();
+        correo = mBUsuario.getCorreo();
+
         return "ConsultarIH?faces-redirect=true";
     }
-    public String elimina(){
-       Usuario usuarioSesion = new Usuario(mBUsuario.getNombreusuario(), mBUsuario.getContrasenia(), mBUsuario.getNombre(),mBUsuario.getApellidos(),mBUsuario.getCorreo() );
 
-       UsuarioDao dao= new UsuarioDao();
-       dao.Eliminar(usuarioSesion);
-       return "SignInIH?faces-redirect=true";
+    public String elimina() {
+        Usuario usuarioSesion = new Usuario(mBUsuario.getNombreusuario(), mBUsuario.getContrasenia(), mBUsuario.getNombre(), mBUsuario.getApellidos(), mBUsuario.getCorreo());
+
+        UsuarioDao dao = new UsuarioDao();
+        dao.Eliminar(usuarioSesion);
+        return "SignInIH?faces-redirect=true";
     }
-    public String actualizar(){
-        nombre = (nombre==null || nombre.equals(""))? mBUsuario.getNombre():nombre;
-        apellidos = (apellidos==null || apellidos.equals(""))? mBUsuario.getApellidos():apellidos;
-        correo = (correo==null || correo.equals(""))? mBUsuario.getCorreo():correo;
-       Usuario usuarioSesion = new Usuario(mBUsuario.getNombreusuario(), mBUsuario.getContrasenia(), nombre,apellidos,correo );
-       UsuarioDao dao= new UsuarioDao();
-       dao.Actualizar(usuarioSesion);
-       mBUsuario.setNombre(nombre);
-       mBUsuario.setApellidos(apellidos);
-       mBUsuario.setCorreo(correo);
-       return "ConsultarIH?faces-redirect=true";
+
+    public String actualizar() {
+        nombre = (nombre == null || nombre.equals("")) ? mBUsuario.getNombre() : nombre;
+        apellidos = (apellidos == null || apellidos.equals("")) ? mBUsuario.getApellidos() : apellidos;
+        correo = (correo == null || correo.equals("")) ? mBUsuario.getCorreo() : correo;
+        Usuario usuarioSesion = new Usuario(mBUsuario.getNombreusuario(), mBUsuario.getContrasenia(), nombre, apellidos, correo);
+        UsuarioDao dao = new UsuarioDao();
+        dao.Actualizar(usuarioSesion);
+        mBUsuario.setNombre(nombre);
+        mBUsuario.setApellidos(apellidos);
+        mBUsuario.setCorreo(correo);
+        return "ConsultarIH?faces-redirect=true";
     }
-    public boolean verificarSesion(){
+
+    public boolean verificarSesion() {
         return mBUsuario.getNombre() != null;
+    }
+
+    public String salir() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        ExternalContext externalContext = context.getExternalContext();
+
+        Object session = externalContext.getSession(false);
+
+        HttpSession httpSession = (HttpSession) session;
+
+        httpSession.invalidate();
+
+        return "index?faces-redirect=true";
+
     }
 }
